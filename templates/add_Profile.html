@@ -1,0 +1,36 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  .container {
+    margin: 100px auto;
+  }
+</style>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6 text-center">
+      <h1 class="">
+        <b class="text-primary"> Add </b>
+        <b class="text-danger">Update</b> Profile Picture
+      </h1>
+      <br />
+      <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          <input
+            type="file"
+            name="profile_photo"
+            class="form-control"
+            id=""
+            required
+          />
+          <br />
+          <button type="submit" class="btn btn-success">Save</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-lg-3"></div>
+  </div>
+</div>
+
+{% endblock %}

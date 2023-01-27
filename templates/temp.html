@@ -1,0 +1,100 @@
+{% extends 'base.html' %} {% block content %}
+
+<title>temp</title>
+<style>
+  img.pin {
+    width: 200px;
+    height: 328px;
+    border-radius: 20px;
+    object-fit: cover;
+  }
+
+  .container1 {
+    padding: 15px;
+  }
+  p.title {
+    font-size: 18px;
+  }
+  b.byusername {
+    font-size: 15px;
+  }
+
+  @media (min-device-width: 320px) and (max-device-width: 480px) {
+    img.pin {
+      width: 170px;
+      height: 320px;
+      object-fit: cover;
+    }
+    .row_parts {
+      width: 50%;
+    }
+    p.title {
+      font-size: 25px;
+    }
+    .container1 {
+      padding: 0px;
+    }
+  }
+
+  
+
+</style>
+<div class="container1">
+  <div class="row">
+    {% for i in data %}
+    <div class="col-lg-2 row_parts text-center">
+        <img src="{{i.Pin.url}}" class="pin " alt="" />
+        <p class="title">
+          {{i.Title}} <br />
+          <b class="byusername">By-@{{i.created_by}}</b> <br />
+          <div class="btns">
+
+            <button
+            class="btn btn-danger rounded-circle"
+            onclick='copyText1("{{i.Pin.url}}","{{i.Title}}")'
+          >
+            <i class="fa-solid fa-file-arrow-down"></i>
+          </button>
+          <button
+            id="copy"
+            onclick='copyText("{{i.Pin.url}}")'
+            class="btn btn-success rounded-circle"
+          >
+            <i class="fa-solid fa-copy"></i>
+          </button>
+        </div>
+        </p>
+          
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<script>
+  function copyText(a) {
+    console.log(a);
+    let abc = navigator.clipboard.writeText(a);
+    if (abc) {
+      alert("Link Copied");
+    }
+  }
+</script>
+<script>
+  function copyText1(url, title) {
+    let imgpath = url;
+    let filename = title;
+
+    if (saveAs(imgpath, filename)) {
+      alert("Pin Downloaded");
+    }
+  }
+  function getFileName(str) {
+    return str.substring(str.lastIndexOf("/") + 1);
+  }
+</script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+  integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+{% endblock %}

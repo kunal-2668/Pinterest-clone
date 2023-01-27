@@ -1,0 +1,72 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  .forms {
+    margin-top: 70px;
+  }
+  .login-form {
+    margin-top: 64px;
+  }
+  h2 {
+    font-size: 3rem;
+  }
+  @media (min-device-width: 320px) and (max-device-width: 480px) {
+    .forms {
+      margin-top: 0px;
+      padding: 30px;
+    }
+    .login-form {
+      margin-top: 0px;
+    }
+    .signup-form {
+      margin-top: 30px;
+    }
+    h2 {
+      display: table;
+      margin: auto;
+    }
+  }
+</style>
+
+<div class="container forms">
+  <div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-4">
+      <div class="form-group login-form">
+        <h2 class="text-success">Login</h2>
+        <form action="" method="post">
+          {% csrf_token %}
+          <label for="">Username</label>
+          <input type="text" name="username" class="form-control" id="" />
+          <label for="">Password</label>
+          <input type="password" name="password" class="form-control" id="" />
+          <br />
+          <button type="submit" class="btn btn-outline-primary">Login</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-4">
+      <div class="form-group signup-form">
+        <h2 class="text-primary">Signup</h2>
+        <form action="" method="post">
+          {% csrf_token %}
+          <label for="">Username</label>
+          <input type="text" name="username" class="form-control" id="" />
+          <label for="">Email</label>
+          <input type="text" name="email" class="form-control" id="" />
+          <label for="">Password</label>
+          <input type="password" name="password" class="form-control" id="" />
+          <label for="">Confirm Password</label>
+          <input type="password" name="password2" class="form-control" id="" />
+          <br />
+          <button type="submit" class="btn btn-outline-success">Signup</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-1"></div>
+  </div>
+</div>
+
+{% endblock %}

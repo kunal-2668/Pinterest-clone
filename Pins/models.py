@@ -1,7 +1,6 @@
 from django.db import models
 from cloudinary.models import CloudinaryField
 from ckeditor.fields import RichTextField
-from random import randint
 # Create your models here.
 
 class Pins(models.Model):
@@ -20,3 +19,4 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.name
+    

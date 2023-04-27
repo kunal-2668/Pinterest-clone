@@ -1,5 +1,4 @@
 {% extends 'base.html' %} {% block content %}
-
 <title>Pinterest</title>
 <style>
   img.pin {
@@ -10,11 +9,11 @@
     transition: 0.5s;
   }
 
-  .pin:hover{
+  /* .pin:hover{
     object-fit:scale-down;
     background-color: black;
     scale: 0.9;
-  }
+  } */
 
   .container1 {
     padding: 15px;
@@ -60,6 +59,7 @@
             onclick='copyText1("{{i.Pin.url}}","{{i.Title}}")'
           >
             <i class="fa-solid fa-file-arrow-down"></i>
+            
           </button>
           <button
             id="copy"
@@ -96,6 +96,7 @@
   function getFileName(str) {
     return str.substring(str.lastIndexOf("/") + 1);
   }
+  // console.log("{{data}}")
 </script>
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"

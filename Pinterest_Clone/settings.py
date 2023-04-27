@@ -44,10 +44,13 @@ INSTALLED_APPS = [
     'ckeditor',
 ]
 
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+
+AWS_QUERYSTRING_AUTH = False
 CKEDITOR_CONFIGS = {
-    'awesome_ckeditor': {
-        'toolbar': 'Basic',
-    },
+'default': {
+    'toolbar':'Full',
+}
 }
 
 MIDDLEWARE = [
@@ -58,7 +61,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_auto_logout.middleware.auto_logout',
 ]
+
+# Auto Logout 
+# Middleware Used 'django_auto_logout.middleware.auto_logout',
+from datetime import timedelta
+
+AUTO_LOGOUT = {'IDLE_TIME': timedelta(minutes=30)} # Change Duration if you want
 
 ROOT_URLCONF = 'Pinterest_Clone.urls'
 

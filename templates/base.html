@@ -67,6 +67,7 @@
     {% block content %} {% endblock %}
 
     <!-- Button trigger modal -->
+    {% if user.is_authenticated %}
     <button
       type="button"
       class="btn btn-success fixed-bottom mb-3"
@@ -75,6 +76,7 @@
     >
       <i class="fa-solid fa-plus"></i>
     </button>
+    {% endif %}
 
     <!-- Modal -->
     <div

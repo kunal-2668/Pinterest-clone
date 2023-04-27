@@ -121,17 +121,16 @@ def update_profile(request,id):
         return redirect('login')
 
 
-'''
-  
-def Connect(request):
-    if request.method == 'GET':
-        form = ConnectForm()
-        return render(request,'connect_page.html',{'form':form})
-    else:
-        form = ConnectForm(request.POST)
-        if form.is_valid():
-            form.save()
+def searchPin(request):
+    if request.method=='POST':
+        searchinp=request.POST['searchinp']
+        if Pins.objects.filter(Title__contains=searchinp).exists():
+            data = Pins.objects.filter(Title__contains=searchinp)
+            return render (request,'index.html',{'data':data})
+        else:
+            messages.error(request,'No Search Result')
             return redirect('home')
-
-'''
- 
+        
+def readMore(request,id):
+    data = Pins.objects.get(id=id)
+    return render (request,'readMore.html',{'data':data})

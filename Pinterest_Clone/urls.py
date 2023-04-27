@@ -20,7 +20,6 @@ from Pins import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.Pinterest_home,name='home'),
-    # path('res',views.res,name=''),
     path('add_pin',views.add_pin,name='add_pin'),
     path('signup',views.Signup,name='signup'),
     path('login',views.Login,name='login'),
@@ -28,4 +27,7 @@ urlpatterns = [
     path('addprofile',views.addprofile,name='addprofile'),
     path('profile',views.Profile_page,name='profile'),
     path('update_profile<int:id>',views.update_profile,name='update_profile'),
+    path('search',views.searchPin,name='search'),
+    path('readMore/<int:id>',views.readMore,name='readMore'),
+
 ]

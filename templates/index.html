@@ -26,6 +26,9 @@
   b.byusername {
     font-size: 15px;
   }
+  .searchinpbox{
+    margin: auto;
+  }
 
   @media (min-device-width: 320px) and (max-device-width: 480px) {
     img.pin {
@@ -46,10 +49,25 @@
 
 </style>
 <div class="container1">
+
   <div class="row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4 text-center">
+      <form action="{% url 'search' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="searchinp" placeholder="Type to search...  Press Enter*" class="form-control w-75 searchinpbox
+        " >
+      </form>
+    </div>
+    <div class="col-lg-4"></div>
+  </div>
+
+  <div class="row mt-5">
     {% for i in data %}
     <div class="col-lg-2 row_parts text-center">
+      <a href="{% url 'readMore' i.id %}">
         <img src="{{i.Pin.url}}" class="pin " alt="" />
+      </a>  
         <p class="title">
           {{i.Title}} <br />
           <b class="byusername">By-@{{i.created_by}}</b> <br />
@@ -98,10 +116,14 @@
   }
   // console.log("{{data}}")
 </script>
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
-  integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-></script>
+
+{% if messages %}
+{% for i in messages %}
+<script>
+  alert("{{i}}")
+</script>
+{% endfor %}
+{% endif %}
+
+
 {% endblock %}

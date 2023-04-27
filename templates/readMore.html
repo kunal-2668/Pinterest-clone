@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+ 
+{% block content %}
+<title>{{data.Title}}</title>
+<style>
+.rmimg{
+    width: 60%;
+    height: 600px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.roundbtn{
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+}
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 text-center">
+            <img src="{{data.Pin.url}}" class="rmimg" alt="">
+        </div>
+        
+        <div class="col-lg-6 text-center">
+            <h2>{{data.Title}}</h2>
+            <a href="{{data.Pin.url}}" class="btn btn-outline-primary mt-5" target="_blank">View in Full Screen</a>
+            <br>
+            <button class="btn btn-success mt-5 roundbtn " onclick='copyText1("{{data.Pin.url}}","{{data.Title}}")'>
+            <i class="fa-solid fa-file-arrow-down fs-2 "></i></button>
+            <script>
+                function copyText1(url, title) {
+                  let imgpath = url;
+                  let filename = title;
+              
+                  if (saveAs(imgpath, filename)) {
+                    alert("Pin Downloaded");
+                  }
+                }
+                function getFileName(str) {
+                  return str.substring(str.lastIndexOf("/") + 1);
+                }
+                // console.log("{{data}}")
+              </script>
+
+              <h5 class="mt-5" >By - {{data.created_by}}</h5>
+              
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

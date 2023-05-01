@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Pins,Profile
+from .models import Pins,Profile,Comments
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
 
@@ -133,4 +133,28 @@ def searchPin(request):
         
 def readMore(request,id):
     data = Pins.objects.get(id=id)
-    return render (request,'readMore.html',{'data':data})
+    commentbox = Comments.objects.filter(Post=data.id)
+    return render (request,'readMore.html',{'data':data,'comment':commentbox})
+
+
+def CommentBox(request):
+    if request.method == 'POST':
+        Post = int(request.POST['postid'])
+        Comment = request.POST['comment']
+        comment_by = int(request.POST['profileid'])
+
+        dataid = Pins.objects.get(id=Post)
+        print(dataid)
+        dataname = User.objects.get(id=comment_by)
+        Comments.objects.create(Post=dataid,Comment=Comment,comment_by=dataname)
+        return redirect('readMore',id=Post )
+    else:
+        messages.error(request,'Comment Failed')
+        return redirect('readMore',id=Post)
+    
+
+def DeleteCommentById(request,id,postid):
+    Comments.objects.get(id=id).delete()
+    return redirect('readMore',id=postid)
+
+

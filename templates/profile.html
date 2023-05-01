@@ -9,10 +9,10 @@
     object-fit: cover;
     transition: 0.5s;
   }
-  .pin:hover{
+  /* .pin:hover{
     object-fit:scale-down;
     background-color: black;
-  }
+  } */
 
   .container1 {
     padding: 15px;
@@ -84,7 +84,9 @@
     <div class="row">
       {% for i in data %}
       <div class="col-lg-2 row_parts text-center">
+        <a href="{% url 'readMore' i.id %}">
           <img src="{{i.Pin.url}}" class="pin" alt="" />
+        </a>
           <p class="title">
             {{i.Title}} <br />
             <b class="byusername">By-@{{i.created_by}}</b> <br />

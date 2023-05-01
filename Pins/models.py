@@ -1,6 +1,7 @@
 from django.db import models
 from cloudinary.models import CloudinaryField
 from ckeditor.fields import RichTextField
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Pins(models.Model):
@@ -20,3 +21,8 @@ class Profile(models.Model):
     def __str__(self):
         return self.name
     
+class Comments(models.Model):
+    Post = models.ForeignKey(Pins,on_delete=models.CASCADE)
+    Comment = models.TextField(blank=True,null=True)
+    comment_by = models.ForeignKey(User,on_delete=models.CASCADE)
+    commented_on = models.DateTimeField(auto_now_add=True)

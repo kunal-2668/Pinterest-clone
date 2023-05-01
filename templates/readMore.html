@@ -1,55 +1,160 @@
-{% extends 'base.html' %}
- 
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <title>{{data.Title}}</title>
 <style>
-.rmimg{
-    width: 60%;
+  .rmimg {
+    width: 45%;
     height: 600px;
     object-fit: cover;
     border-radius: 20px;
-}
+  }
 
-.roundbtn{
+  .roundbtn {
     height: 60px;
     width: 60px;
     border-radius: 100%;
-}
+  }
+  .cbi {
+    margin: auto;
+  }
+
+  .commentbox {
+    height: 242px;
+    margin: auto;
+    overflow: scroll;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 </style>
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-6 text-center">
-            <img src="{{data.Pin.url}}" class="rmimg" alt="">
-        </div>
-        
-        <div class="col-lg-6 text-center">
-            <h2>{{data.Title}}</h2>
-            <a href="{{data.Pin.url}}" class="btn btn-outline-primary mt-5" target="_blank">View in Full Screen</a>
-            <br>
-            <button class="btn btn-success mt-5 roundbtn " onclick='copyText1("{{data.Pin.url}}","{{data.Title}}")'>
-            <i class="fa-solid fa-file-arrow-down fs-2 "></i></button>
-            <script>
-                function copyText1(url, title) {
-                  let imgpath = url;
-                  let filename = title;
-              
-                  if (saveAs(imgpath, filename)) {
-                    alert("Pin Downloaded");
-                  }
-                }
-                function getFileName(str) {
-                  return str.substring(str.lastIndexOf("/") + 1);
-                }
-                // console.log("{{data}}")
-              </script>
-
-              <h5 class="mt-5" >By - {{data.created_by}}</h5>
-              
-        </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-6 text-center">
+      <img src="{{data.Pin.url}}" class="rmimg" alt="" />
     </div>
+
+    <div class="col-lg-6 text-center">
+      <h1>{{data.Title}}</h1>
+      <a
+        href="{{data.Pin.url}}"
+        class="btn btn-outline-primary mt-3"
+        target="_blank"
+        >View in Full Screen</a
+      >
+      <br />
+      <button
+        class="btn btn-success mt-3 roundbtn"
+        onclick='copyText1("{{data.Pin.url}}","{{data.Title}}")'
+      >
+        <i class="fa-solid fa-file-arrow-down fs-2"></i>
+      </button>
+      <script>
+        function copyText1(url, title) {
+          let imgpath = url;
+          let filename = title;
+
+          if (saveAs(imgpath, filename)) {
+            alert("Pin Downloaded");
+          }
+        }
+        function getFileName(str) {
+          return str.substring(str.lastIndexOf("/") + 1);
+        }
+        // console.log("{{data}}")
+      </script>
+
+      <h5 class="mt-2">Pin By - {{data.created_by}}</h5>
+      <div class="commentdiv mt-3 text-center">
+        <form action="{% url 'Commentbox' %}" method="post">
+          {% csrf_token %}
+          <input type="text" name="postid" id="postid" value="" hidden />
+          <input
+            type="text"
+            name="comment"
+            class="form-control w-50 cbi"
+            placeholder="Comment Here"
+            id=""
+            required
+          />
+          <input type="text" name="profileid" id="comment_by" value="" hidden />
+          {% if user.is_authenticated %}
+          <button type="submit" class="btn btn-outline-success mt-1">
+            Add Comment
+          </button>
+          {% endif %}
+        </form>
+        <script>
+          document.getElementById("postid").value = "{{data.id}}";
+          document.getElementById("comment_by").value = "{{user.id}}";
+        </script>
+        {% if comment %}
+        <div class="commentbox border w-50 mt-2">
+          {% for i in comment %}
+          <p class="mb-1">
+            {{i.comment_by}} - {{i.Comment}} {% if i.comment_by == user %} &nbsp;
+            
+            <a href="{% url 'deletecomment' i.id data.id %}"><i class="fa-solid fa-trash" style="color: #ed0707;"></i></a>
+
+            {% comment %}
+
+            <button
+              type="button"
+              class="btn btn-outline"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              <i class="fa-solid fa-trash" style="color: #ed0707"></i>
+            </button>
+            {% endcomment %}
+
+
+
+            {% endif %}
+          </p>
+
+          {% endfor %}
+        </div>
+        {% else %}
+        <h6 class="mt-2">Be first one to comment</h6>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- Button trigger modal -->
 
+<!-- Modal -->
+{% comment %}
 
-{% endblock %}
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Are you Sure?</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        delete {{i.Comment}} ? <br />
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          No
+        </button>
+        <a href="" class="btn btn-danger">Yes Delete</a>
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+{% endcomment %} {% endblock %}

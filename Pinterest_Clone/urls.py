@@ -29,5 +29,7 @@ urlpatterns = [
     path('update_profile<int:id>',views.update_profile,name='update_profile'),
     path('search',views.searchPin,name='search'),
     path('readMore/<int:id>',views.readMore,name='readMore'),
+    path('CommentBox',views.CommentBox,name='Commentbox'),
+    path('DeleteCommentById/<int:id>/<int:postid>',views.DeleteCommentById,name='deletecomment'),
 
 ]

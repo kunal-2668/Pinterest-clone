@@ -1,7 +1,8 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect , get_object_or_404
 from .models import Pins,Profile,Comments
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -9,7 +10,7 @@ def Pinterest_home(request):
     data = Pins.objects.order_by("?")
     return render (request,'index.html',{'data':data})
 
-
+@login_required(login_url='login')
 def add_pin(request):
     if request.method == 'POST':
         Pin = request.FILES['Pin']
@@ -78,6 +79,7 @@ def logout(request):
     return redirect('home')
 
 
+@login_required(login_url='login')
 def addprofile(request):
     if request.user.is_authenticated:
         if Profile.objects.filter(name__exact=request.user).exists():
@@ -92,6 +94,7 @@ def addprofile(request):
         return redirect('login')
 
 
+@login_required(login_url='login')
 def Profile_page(request):
     if request.user.is_authenticated:
         if Profile.objects.filter(name__exact=request.user).exists():
@@ -105,6 +108,7 @@ def Profile_page(request):
         return redirect('login')
     
 
+@login_required(login_url='login')
 def update_profile(request,id):  
     data = Profile.objects.get(id=id)
     if request.user.is_authenticated:
@@ -134,7 +138,13 @@ def searchPin(request):
 def readMore(request,id):
     data = Pins.objects.get(id=id)
     commentbox = Comments.objects.filter(Post=data.id)
-    return render (request,'readMore.html',{'data':data,'comment':commentbox})
+    number_of_likes = data.number_of_likes()
+
+    liked=False
+    if data.likes.filter(id=request.user.id).exists():
+        liked=True
+
+    return render (request,'readMore.html',{'data':data,'comment':commentbox,'number_of_likes':number_of_likes,'liked':liked})
 
 
 def CommentBox(request):
@@ -153,8 +163,20 @@ def CommentBox(request):
         return redirect('readMore',id=Post)
     
 
+@login_required(login_url='login')
 def DeleteCommentById(request,id,postid):
     Comments.objects.get(id=id).delete()
     return redirect('readMore',id=postid)
 
 
+@login_required(login_url='login')
+def LikePin(request,id):
+    pin = get_object_or_404(Pins,id=request.POST['pin_id'])
+    liked=False
+    if pin.likes.filter(id=request.user.id).exists():
+        pin.likes.remove(request.user)
+        liked=False
+    else:
+        pin.likes.add(request.user)
+        liked=True
+    return redirect('readMore',id=id)

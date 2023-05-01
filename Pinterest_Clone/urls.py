@@ -31,5 +31,6 @@ urlpatterns = [
     path('readMore/<int:id>',views.readMore,name='readMore'),
     path('CommentBox',views.CommentBox,name='Commentbox'),
     path('DeleteCommentById/<int:id>/<int:postid>',views.DeleteCommentById,name='deletecomment'),
+    path('LikePin/<int:id>',views.LikePin,name='LikePin'),
 
 ]

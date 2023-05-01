@@ -10,9 +10,13 @@ class Pins(models.Model):
     Description = RichTextField(blank=True,null=True)
     created_by = models.CharField(max_length=255,blank=True,null=True)
     created_on = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User,blank=True,null=True, related_name='Pin_like')
     
     def __str__(self):
         return self.Title
+
+    def number_of_likes(self):
+        return self.likes.count()
 
 class Profile(models.Model):
     name = models.CharField(max_length=255)

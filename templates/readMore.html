@@ -31,7 +31,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-lg-6 text-center">
-      <img src="{{data.Pin.url}}" class="rmimg" alt="" />
+      <img src="{{data.Pin.url}}" class="rmimg mt-2" alt="" />
     </div>
 
     <div class="col-lg-6 text-center">
@@ -66,6 +66,26 @@
 
       <h5 class="mt-2">Pin By - {{data.created_by}}</h5>
       <div class="commentdiv mt-3 text-center">
+        <div class="dlikeiv">
+          <h2>{% if liked %} {{number_of_likes}} {% endif %}</h2>
+          <form action="{% url 'LikePin' data.id %}" method="post">
+            {% csrf_token %}
+            <button
+            type="submit"
+            name="pin_id"
+            value="{{data.id}}"
+            class="btn fs-2"
+            >
+            {% if liked %}
+            <i class="fa-solid fa-heart" style="color: #ff0000"></i>
+            {% else %}
+            <i class="fa-regular fa-heart" style="color: #ff0000"></i>
+            {% endif %}
+          </button>
+          <div></div>
+        </form>
+      </div>
+
         <form action="{% url 'Commentbox' %}" method="post">
           {% csrf_token %}
           <input type="text" name="postid" id="postid" value="" hidden />
@@ -88,13 +108,20 @@
           document.getElementById("postid").value = "{{data.id}}";
           document.getElementById("comment_by").value = "{{user.id}}";
         </script>
+
+        <br />
+        
+
         {% if comment %}
         <div class="commentbox border w-50 mt-2">
           {% for i in comment %}
           <p class="mb-1">
-            {{i.comment_by}} - {{i.Comment}} {% if i.comment_by == user %} &nbsp;
-            
-            <a href="{% url 'deletecomment' i.id data.id %}"><i class="fa-solid fa-trash" style="color: #ed0707;"></i></a>
+            {{i.comment_by}} - {{i.Comment}} {% if i.comment_by == user %}
+            &nbsp;
+
+            <a href="{% url 'deletecomment' i.id data.id %}"
+              ><i class="fa-solid fa-trash" style="color: #ed0707"></i
+            ></a>
 
             {% comment %}
 
@@ -106,11 +133,7 @@
             >
               <i class="fa-solid fa-trash" style="color: #ed0707"></i>
             </button>
-            {% endcomment %}
-
-
-
-            {% endif %}
+            {% endcomment %} {% endif %}
           </p>
 
           {% endfor %}

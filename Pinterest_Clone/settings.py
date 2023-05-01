@@ -12,8 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-y7!7k@+lprvd5%g0r%1d)g9#up0-#%i!e6e-7e9x&z9^)ve!45'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -160,3 +159,7 @@ cloudinary.config(
     api_proxy = "http://proxy.server:3128",
     secure = True,
 )
+
+
+import cloudinary.uploader
+import cloudinary.api

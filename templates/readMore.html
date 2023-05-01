@@ -18,7 +18,7 @@
   }
 
   .commentbox {
-    height: 242px;
+    height: 202px;
     margin: auto;
     overflow: scroll;
   }
@@ -67,7 +67,7 @@
       <h5 class="mt-2">Pin By - {{data.created_by}}</h5>
       <div class="commentdiv mt-3 text-center">
         <div class="dlikeiv">
-          <h2>{% if liked %} {{number_of_likes}} {% endif %}</h2>
+          <h4>{% if liked %} {{number_of_likes}} {% endif %}</h4>
           <form action="{% url 'LikePin' data.id %}" method="post">
             {% csrf_token %}
             <button

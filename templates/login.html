@@ -50,7 +50,7 @@
     <div class="col-lg-4">
       <div class="form-group signup-form">
         <h2 class="text-primary">Signup</h2>
-        <form action="" method="post">
+        <form action="{% url 'signup' %}" method="post">
           {% csrf_token %}
           <label for="">Username</label>
           <input type="text" name="username" class="form-control" id="" />
@@ -68,5 +68,14 @@
     <div class="col-lg-1"></div>
   </div>
 </div>
+
+
+{% if messages %}
+{% for i in messages %}
+<script>
+  alert("{{i}}")
+</script>
+{% endfor %}
+{% endif %}
 
 {% endblock %}

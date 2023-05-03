@@ -32,5 +32,7 @@ urlpatterns = [
     path('CommentBox',views.CommentBox,name='Commentbox'),
     path('DeleteCommentById/<int:id>/<int:postid>',views.DeleteCommentById,name='deletecomment'),
     path('LikePin/<int:id>',views.LikePin,name='LikePin'),
+    path('deleteasdsfsklfdgfjfdlxkmfe/<int:id>',views.deletePin,name='DeletePin'),
+
 
 ]

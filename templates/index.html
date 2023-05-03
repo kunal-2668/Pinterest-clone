@@ -1,129 +1,104 @@
 {% extends 'base.html' %} {% block content %}
 <title>Pinterest</title>
+
 <style>
-  img.pin {
-    width: 200px;
-    height: 328px;
+  .grid {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-auto-rows: 40px;
+  }
+
+  .pins {
+    grid-row-end: span 2;
+  }
+
+  .pinn{
+    width: 100%;
     border-radius: 20px;
-    object-fit: cover;
-    transition: 0.5s;
   }
 
-  /* .pin:hover{
-    object-fit:scale-down;
-    background-color: black;
-    scale: 0.9;
-  } */
-
-  .container1 {
-    padding: 15px;
-  }
-
-  p.title {
-    font-size: 18px;
-  }
-
-  b.byusername {
-    font-size: 15px;
-  }
   .searchinpbox{
-    margin: auto;
+      margin:auto;
   }
 
-  @media (min-device-width: 320px) and (max-device-width: 480px) {
-    img.pin {
-      width: 170px;
-      height: 320px;
-      object-fit: cover;
-    }
-    .row_parts {
-      width: 50%;
-    }
-    p.title {
-      font-size: 25px;
-    }
-    .container1 {
-      padding: 0px;
-    }
+  @media screen and (max-width:320px) {
+
+    .grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-auto-rows: 20px;
+
   }
+}
+
+
+@media screen and (min-width:321px) and (max-width:376px) {
+.grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-auto-rows: 20px;
+
+  }
+}
 
 </style>
-<div class="container1">
 
-  <div class="row">
-    <div class="col-lg-4"></div>
-    <div class="col-lg-4 text-center">
-      <form action="{% url 'search' %}" method="post">
-        {% csrf_token %}
-        <input type="text" name="searchinp" placeholder="Type to search...  Press Enter*" class="form-control w-75 searchinpbox
-        " >
-      </form>
-    </div>
-    <div class="col-lg-4"></div>
-  </div>
+<div class="container">
 
-  <div class="row mt-5">
-    {% for i in data %}
-    <div class="col-lg-2 row_parts text-center">
-      <a href="{% url 'readMore' i.id %}">
-        <img src="{{i.Pin.url}}" class="pin " alt="" />
-      </a>  
-        <p class="title">
-          {{i.Title}} <br />
-          <b class="byusername">By-@{{i.created_by}}</b> <br />
-          <div class="btns">
-            <button
-            class="btn btn-danger rounded-circle"
-            onclick='copyText1("{{i.Pin.url}}","{{i.Title}}")'
-          >
-            <i class="fa-solid fa-file-arrow-down"></i>
-            
-          </button>
-          <button
-            id="copy"
-            onclick='copyText("{{i.Pin.url}}")'
-            class="btn btn-success rounded-circle"
-          >
-            <i class="fa-solid fa-copy"></i>
-          </button>
+     <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4 text-center">
+          <form action="{% url 'search' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="searchinp" placeholder="Type to search... " class="form-control w-75 searchinpbox
+            " >
+            <div class="text-center mt-2">
+                <button type="submit" class="btn btn-outline-success btn-sm" >Search</button>
+            </div>
+          </form>
         </div>
-        </p>
-          
+        <div class="col-lg-4"></div>
+      </div>
+
+    <div class="grid mt-4">
+        {% for i in data %}
+        <div class="item photo">
+    <div class="content">
+      <a href="{% url 'readMore' i.id %}">
+      <img src="{{i.Pin.url}}" class="pinn col-sm-6 col-lg-12 col-md-4 " alt="" srcset="" />
+      </a>
     </div>
-    {% endfor %}
   </div>
+  {% endfor %}
+  </div>
+
 </div>
-<script>
-  function copyText(a) {
-    console.log(a);
-    let abc = navigator.clipboard.writeText(a);
-    if (abc) {
-      alert("Link Copied");
-    }
-  }
-</script>
-<script>
-  function copyText1(url, title) {
-    let imgpath = url;
-    let filename = title;
 
-    if (saveAs(imgpath, filename)) {
-      alert("Pin Downloaded");
-    }
-  }
-  function getFileName(str) {
-    return str.substring(str.lastIndexOf("/") + 1);
-  }
-  // console.log("{{data}}")
-</script>
+  <script>
+    function resizeGridItem(item){
+   grid = document.getElementsByClassName("grid")[0];
+   rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+   rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
+   rowSpan = Math.ceil((item.querySelector('.content').getBoundingClientRect().height+rowGap)/(rowHeight+rowGap));
+   item.style.gridRowEnd = "span "+rowSpan;
+}
 
-{% if messages %}
-{% for i in messages %}
-<script>
-  alert("{{i}}")
-</script>
-{% endfor %}
-{% endif %}
+function resizeAllGridItems(){
+   allItems = document.getElementsByClassName("item");
+   for(x=0;x<allItems.length;x++){
+      resizeGridItem(allItems[x]);
+   }
+}
 
-
-{% endblock %}
+window.onload = resizeAllGridItems();
+window.addEventListener("resize", resizeAllGridItems);
+allItems = document.getElementsByClassName("item");
+for(x=0;x<allItems.length;x++){
+   imagesLoaded( allItems[x], resizeInstance);
+}
+function resizeInstance(instance){
+   item = instance.elements[0];
+   resizeGridItem(item);
+}
+  </script>
+  {% endblock %}
+</div>

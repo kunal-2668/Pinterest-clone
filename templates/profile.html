@@ -1,57 +1,55 @@
 {% extends 'base.html' %} {% block content %}
 
-<title>{{user}}'s Profile</title>
-<style>
-  img.pin {
-    width: 200px;
-    height: 328px;
-    border-radius: 20px;
-    object-fit: cover;
-    transition: 0.5s;
-  }
-  /* .pin:hover{
-    object-fit:scale-down;
-    background-color: black;
-  } */
+<title>{{user}}'s profile</title>
 
-  .container1 {
-    padding: 15px;
-  }
-  p.title {
-    font-size: 18px;
-  }
-  b.byusername {
-    font-size: 15px;
-  }
-  @media (min-device-width: 320px) and (max-device-width: 480px) {
-    img.pin {
-      width: 170px;
-      height: 320px;
-      object-fit: cover;
+<style>
+
+    .profile_photo{
+        width: 220px;
+        height: 220px;
+        border-radius: 100%;
+        object-fit: cover;
+        margin: auto;
+        display: table;
     }
-    .row_parts {
-      width: 50%;
+
+    .grid {
+      display: grid;
+      grid-gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      grid-auto-rows: 40px;
     }
-    p.title {
-      font-size: 25px;
+  
+    .pins {
+      grid-row-end: span 2;
     }
-    .container1 {
-      padding: 0px;
+  
+    .pinn{
+      width: 100%;
+      border-radius: 20px;
+    }
+    
+    
+    @media screen and (max-width:320px) {
+  
+      .grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-auto-rows: 20px;
+  
     }
   }
-  .profile_photo{
-    width: 100%;
+  
+  
+  @media screen and (min-width:321px) and (max-width:376px) {
+  .grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-auto-rows: 20px;
+  
+    }
   }
-  .round {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    overflow: hidden;
-    border-radius: 50%;
-    background-color: white;
-    margin: auto;
-  }
+  
   </style>
+  
   
 <div class="container justify-content-center cover mt-3">
   <div class="round">
@@ -80,69 +78,46 @@
 </div>
 </div>
   <hr />
-  <div class="container1">
-    <div class="row">
-      {% for i in data %}
-      <div class="col-lg-2 row_parts text-center">
-        <a href="{% url 'readMore' i.id %}">
-          <img src="{{i.Pin.url}}" class="pin" alt="" />
-        </a>
-          <p class="title">
-            {{i.Title}} <br />
-            <b class="byusername">By-@{{i.created_by}}</b> <br />
-            <div class="btns">
-              <button
-              class="btn btn-danger rounded-circle"
-              onclick='copyText1("{{i.Pin.url}}","{{i.Title}}")'
-            >
-              <i class="fa-solid fa-file-arrow-down"></i>
-            </button>
-            <button
-              id="copy"
-              onclick='copyText("{{i.Pin.url}}")'
-              class="btn btn-success rounded-circle"
-            >
-              <i class="fa-solid fa-copy"></i>
-            </button>
-            <button
-              id="copy"
-              class="btn btn-danger rounded-circle"
-            >
-            <i class="fa-solid fa-trash"></i></i>
-            </button>
-          </div>
-          </p>           
-      </div>
-      {% endfor %}
+  <div class="container">
+    <div class="grid">
+        {% for i in data %}
+        <div class="item photo">
+    <div class="content">
+      <a href="{% url 'readMore' i.id %}">
+      <img src="{{i.Pin.url}}" class="pinn col-sm-6 col-lg-12 col-md-4 " alt="" srcset="" />
+      </a>
     </div>
   </div>
-  <script>
-    function copyText(a) {
-      console.log(a);
-      let abc = navigator.clipboard.writeText(a);
-      if (abc) {
-        alert("Link Copied");
-      }
-    }
-  </script>
-  <script>
-    function copyText1(url, title) {
-      let imgpath = url;
-      let filename = title;
+  {% endfor %}
+  </div>
   
-      if (saveAs(imgpath, filename)) {
-        alert("Pin Downloaded");
-      }
-    }
-    function getFileName(str) {
-      return str.substring(str.lastIndexOf("/") + 1);
-    }
-  </script>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
-    integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  ></script>
 </div>
+  
+  <script>
+    function resizeGridItem(item){
+   grid = document.getElementsByClassName("grid")[0];
+   rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+   rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
+   rowSpan = Math.ceil((item.querySelector('.content').getBoundingClientRect().height+rowGap)/(rowHeight+rowGap));
+   item.style.gridRowEnd = "span "+rowSpan;
+}
+
+function resizeAllGridItems(){
+   allItems = document.getElementsByClassName("item");
+   for(x=0;x<allItems.length;x++){
+      resizeGridItem(allItems[x]);
+   }
+}
+
+window.onload = resizeAllGridItems();
+window.addEventListener("resize", resizeAllGridItems);
+allItems = document.getElementsByClassName("item");
+for(x=0;x<allItems.length;x++){
+   imagesLoaded( allItems[x], resizeInstance);
+}
+function resizeInstance(instance){
+   item = instance.elements[0];
+   resizeGridItem(item);
+}
+  </script>
   {% endblock %}

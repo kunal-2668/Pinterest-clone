@@ -33,7 +33,7 @@ def Signup(request):
             password2 = request.POST['password2']
 
             if len(password) >= 8 and password == password2 :
-    
+
                 if User.objects.filter(username=email).exists():
                     messages.error(request,'Username Already Exists')
                     return redirect('login')
@@ -52,7 +52,7 @@ def Signup(request):
                 return redirect('login')
 
         return render (request,'login.html')
-    
+
 
 def Login(request):
     if request.user.is_authenticated:
@@ -61,7 +61,7 @@ def Login(request):
         if request.method == 'POST':
             username = request.POST['username']
             password = request.POST['password']
-  
+
             user = auth.authenticate(username=username,password=password)
 
             if user is not None:
@@ -70,7 +70,7 @@ def Login(request):
             else:
                 messages.error(request,'Invalid Username/ Password')
                 return redirect('login')
-        
+
         return render (request,'login.html')
 
 
@@ -99,17 +99,17 @@ def Profile_page(request):
     if request.user.is_authenticated:
         if Profile.objects.filter(name__exact=request.user).exists():
             Profile_photo = Profile.objects.get(name__exact=request.user)
-            data = Pins.objects.filter(created_by__exact=request.user)
+            data = Pins.objects.filter(created_by__exact=request.user).order_by('-created_on')
             return render(request,'profile.html',{'Profile_photo':Profile_photo,'data':data})
         else:
-            data = Pins.objects.filter(created_by__exact=request.user)
+            data = Pins.objects.filter(created_by__exact=request.user).order_by('-created_on')
             return render(request,'profile.html',{'data':data})
     else:
         return redirect('login')
-    
+
 
 @login_required(login_url='login')
-def update_profile(request,id):  
+def update_profile(request,id):
     data = Profile.objects.get(id=id)
     if request.user.is_authenticated:
         if Profile.objects.filter(name__exact=request.user).exists():
@@ -134,7 +134,7 @@ def searchPin(request):
         else:
             messages.error(request,'No Search Result')
             return redirect('home')
-        
+
 def readMore(request,id):
     data = Pins.objects.get(id=id)
     commentbox = Comments.objects.filter(Post=data.id)
@@ -161,7 +161,7 @@ def CommentBox(request):
     else:
         messages.error(request,'Comment Failed')
         return redirect('readMore',id=Post)
-    
+
 
 @login_required(login_url='login')
 def DeleteCommentById(request,id,postid):
@@ -180,3 +180,9 @@ def LikePin(request,id):
         pin.likes.add(request.user)
         liked=True
     return redirect('readMore',id=id)
+
+@login_required(login_url='login')
+def deletePin(req,id):
+    Pins.objects.get(id=id).delete()
+    return redirect('home')
+

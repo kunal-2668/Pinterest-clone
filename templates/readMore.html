@@ -2,20 +2,22 @@
 <title>{{data.Title}}</title>
 <style>
   .rmimg {
-    width: 60%;
-    height: 550px;
+    width: 100%;
     object-fit: cover;
     border-radius: 20px;
   }
 
-  @media screen and (min-width: 375px) and (max-width: 424px) {
-    .rmimg {
-      width: 100%;
-      height: 600px;
-      object-fit: cover;
-      border-radius: 20px;
+    @media screen and (min-width:321px) and (max-width:374px) {
+
+
+    .commentbox {
+        height: 202px;
+        overflow: scroll;
     }
-  }
+
+
+    }
+
 
   .roundbtn {
     height: 60px;
@@ -40,11 +42,15 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-6 text-center">
-      <img src="{{data.Pin.url}}" class="rmimg mt-2" alt="" />
+      <img src="{{data.Pin.url}}" class="rmimg mt-2 mb-5" alt="" />
     </div>
 
     <div class="col-lg-6 text-center">
       <h1>{{data.Title}}</h1>
+      {% if data.created_by == user.username %}
+      <a href="{% url 'DeletePin' data.id %}" class="btn btn-danger btn-sm">Delete Pin</a>
+      <br>
+      {% endif %}
       <a
         href="{{data.Pin.url}}"
         class="btn btn-outline-primary mt-3"
@@ -121,7 +127,9 @@
         <br />
 
         {% if comment %}
-        <div class="commentbox border w-50 mt-2">
+        <div class="commentbox w-100 mt-2 mb-5">
+            <h4 class="text-center" >Comments</h4>
+            <hr>
           {% for i in comment %}
           <p class="mb-1">
             {{i.comment_by}} - {{i.Comment}} {% if i.comment_by == user %}

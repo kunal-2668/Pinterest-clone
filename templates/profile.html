@@ -19,38 +19,38 @@
       grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
       grid-auto-rows: 40px;
     }
-  
+
     .pins {
       grid-row-end: span 2;
     }
-  
+
     .pinn{
       width: 100%;
       border-radius: 20px;
     }
-    
-    
+
+
     @media screen and (max-width:320px) {
-  
+
       .grid {
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       grid-auto-rows: 20px;
-  
+
     }
   }
-  
-  
+
+
   @media screen and (min-width:321px) and (max-width:376px) {
   .grid {
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       grid-auto-rows: 20px;
-  
+
     }
   }
-  
+
   </style>
-  
-  
+
+
 <div class="container justify-content-center cover mt-3">
   <div class="round">
     <a href="">
@@ -63,8 +63,8 @@
     </a>
     {% else %}
     <img
-        src="https://i.pinimg.com/236x/64/18/ae/6418aedd8af9947a524fd8eb44979562.jpg" 
-        class="profile_photo" 
+        src="https://i.pinimg.com/236x/64/18/ae/6418aedd8af9947a524fd8eb44979562.jpg"
+        class="profile_photo"
         alt=""/>
       {% endif %}
 </div>
@@ -90,9 +90,9 @@
   </div>
   {% endfor %}
   </div>
-  
+
 </div>
-  
+  <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
   <script>
     function resizeGridItem(item){
    grid = document.getElementsByClassName("grid")[0];

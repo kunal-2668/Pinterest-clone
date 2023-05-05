@@ -7,6 +7,11 @@
     border-radius: 20px;
   }
 
+.ssttiicckkyy{
+    position:sticky;
+    top:0px;
+}
+
     @media screen and (min-width:321px) and (max-width:374px) {
 
 
@@ -15,9 +20,7 @@
         overflow: scroll;
     }
 
-
     }
-
 
   .roundbtn {
     height: 60px;
@@ -45,7 +48,10 @@
       <img src="{{data.Pin.url}}" class="rmimg mt-2 mb-5" alt="" />
     </div>
 
-    <div class="col-lg-6 text-center">
+    <div class="col-lg-6 text-center ">
+        <div class="ssttiicckkyy">
+
+
       <h1>{{data.Title}}</h1>
       {% if data.created_by == user.username %}
       <a href="{% url 'DeletePin' data.id %}" class="btn btn-danger btn-sm">Delete Pin</a>
@@ -161,6 +167,7 @@
     </div>
   </div>
 </div>
+        </div>
 
 <!-- Button trigger modal -->
 

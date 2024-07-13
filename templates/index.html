@@ -2,11 +2,12 @@
 <title>Pinterest</title>
 
 <style>
+
   .grid {
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    grid-auto-rows: 40px;
+    grid-auto-rows: 30px;
   }
 
   .pins {
@@ -21,6 +22,17 @@
   .searchinpbox{
       margin:auto;
   }
+    .profileimghp{
+    height: 30px;
+    width: 30px;
+    border-radius: 100px;
+    object-fit: cover;
+  }
+  .fsjn{
+    font-size: 12px;
+    width: 20px;
+    object-fit: contain;
+  }
 
   @media screen and (max-width:320px) {
 
@@ -34,7 +46,7 @@
 
 @media screen and (min-width:321px) and (max-width:376px) {
 .grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     grid-auto-rows: 20px;
 
   }
@@ -59,6 +71,16 @@
         <div class="col-lg-4"></div>
       </div>
 
+{% if messages %}
+{% for i in messages %}
+<div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+      <strong>Error {{i}}</strong>.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+{% endif %}
+
+
     <div class="grid mt-4">
         {% for i in data %}
         <div class="item photo">
@@ -66,12 +88,29 @@
       <a href="{% url 'readMore' i.id %}">
       <img src="{{i.Pin.url}}" class="pinn col-sm-6 col-lg-12 col-md-4 " alt="" srcset="" />
       </a>
+      <div class="mt-1 ms-2">
+        {% for j in pro %}
+        {% if i.created_by == j.name %}
+        {% if i.created_by == user.username %}
+        <a href="{% url 'profile' %}" style="text-decoration: none; color: black;" >
+          <img src="{{j.profile_photo.url}}" class="profileimghp" alt=""><span class="fsjn">{{j.name}}</span>
+          </a>
+          {% else %}
+          <a href="{% url 'showotherprofile' j.id %}" style="text-decoration: none; color: black;" >
+            <img src="{{j.profile_photo.url}}" class="profileimghp" alt=""> <span class="fsjn">{{j.name}}</span>
+          </a>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+      </div>
     </div>
   </div>
   {% endfor %}
   </div>
 
 </div>
+
+
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
   <script>
     function resizeGridItem(item){

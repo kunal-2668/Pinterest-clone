@@ -85,7 +85,24 @@
         // console.log("{{data}}")
       </script>
 
-      <h5 class="mt-2">Pin By - {{data.created_by}}</h5>
+      <br>
+      <div class="mt-2">
+        {% if pro %}
+        {% if pro.name == user.username %}
+        <a href="{% url 'profile' %}" style="text-decoration: none; color: black;">
+          <img src="{{pro.profile_photo.url}}" style="width:40px;height: 40px; border-radius: 100%; object-fit: cover;" alt="">
+          <span class="mt-2 fs-5">{{pro.name}}</span>
+        </a>
+        {% else %}
+        <a href="{% url 'showotherprofile' pro.id %}" style="text-decoration: none; color: black;">
+          <img src="{{pro.profile_photo.url}}" style="width:40px;height: 40px; border-radius: 100%; object-fit: cover;" alt="">
+          <span class="mt-2 fs-5">{{pro.name}}</span>
+        </a>
+        {% endif %}
+        {% else %}
+          <span class="mt-2 fs-5">by-{{data.created_by}}</span>
+        {% endif %}
+      </div>
       <div class="commentdiv mt-3 text-center">
         <div class="dlikeiv">
           <h4>{{number_of_likes}}</h4>

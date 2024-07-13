@@ -42,9 +42,17 @@
 
   @media screen and (min-width:321px) and (max-width:376px) {
   .grid {
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       grid-auto-rows: 20px;
 
+    }
+    .profile_photo{
+        width: 180px;
+        height: 180px;
+        border-radius: 100%;
+        object-fit: cover;
+        margin: auto;
+        display: table;
     }
   }
 

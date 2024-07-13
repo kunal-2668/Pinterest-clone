@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<title>{{pro.name}}'s profile</title>
+
+<style>
+
+    .profile_photo{
+        width: 220px;
+        height: 220px;
+        border-radius: 100%;
+        object-fit: cover;
+        margin: auto;
+        display: table;
+    }
+
+    .grid {
+      display: grid;
+      grid-gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      grid-auto-rows: 40px;
+    }
+
+    .pins {
+      grid-row-end: span 2;
+    }
+
+    .pinn{
+      width: 100%;
+      border-radius: 20px;
+    }
+
+
+    @media screen and (max-width:320px) {
+
+      .grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-auto-rows: 20px;
+
+    }
+  }
+
+
+  @media screen and (min-width:321px) and (max-width:376px) {
+  .grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-auto-rows: 20px;
+
+    }
+  }
+
+  </style>
+
+
+<div class="container justify-content-center cover mt-3">
+  <div class="round">
+    <a href="">
+    {% if pro.profile_photo %}
+      <img
+        src="{{pro.profile_photo.url}}"
+        class="profile_photo"
+        alt=""
+      />
+    </a>
+    {% else %}
+    <img
+        src="https://i.pinimg.com/236x/64/18/ae/6418aedd8af9947a524fd8eb44979562.jpg"
+        class="profile_photo"
+        alt=""/>
+      {% endif %}
+</div>
+<div class="text-center mt-3">
+    <p class="mt-2"><b>{{pro.name}}</b></p>
+</div>
+</div>
+  <hr />
+  <div class="container">
+    <div class="grid">
+        {% for i in data %}
+        <div class="item photo">
+    <div class="content">
+      <a href="{% url 'readMore' i.id %}">
+      <img src="{{i.Pin.url}}" class="pinn col-sm-6 col-lg-12 col-md-4 " alt="" srcset="" />
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+  </div>
+
+</div>
+  <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+  <script>
+    function resizeGridItem(item){
+   grid = document.getElementsByClassName("grid")[0];
+   rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+   rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
+   rowSpan = Math.ceil((item.querySelector('.content').getBoundingClientRect().height+rowGap)/(rowHeight+rowGap));
+   item.style.gridRowEnd = "span "+rowSpan;
+}
+
+function resizeAllGridItems(){
+   allItems = document.getElementsByClassName("item");
+   for(x=0;x<allItems.length;x++){
+      resizeGridItem(allItems[x]);
+   }
+}
+
+window.onload = resizeAllGridItems();
+window.addEventListener("resize", resizeAllGridItems);
+allItems = document.getElementsByClassName("item");
+for(x=0;x<allItems.length;x++){
+   imagesLoaded( allItems[x], resizeInstance);
+}
+function resizeInstance(instance){
+   item = instance.elements[0];
+   resizeGridItem(item);
+}
+  </script>
+  {% endblock %}

@@ -33,6 +33,6 @@ urlpatterns = [
     path('DeleteCommentById/<int:id>/<int:postid>',views.DeleteCommentById,name='deletecomment'),
     path('LikePin/<int:id>',views.LikePin,name='LikePin'),
     path('deleteasdsfsklfdgfjfdlxkmfe/<int:id>',views.deletePin,name='DeletePin'),
-
+    path('user-profile/<int:id>',views.showotherprofile,name='showotherprofile'),
 
 ]

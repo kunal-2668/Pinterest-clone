@@ -63,11 +63,11 @@ MIDDLEWARE = [
     'django_auto_logout.middleware.auto_logout',
 ]
 
-# Auto Logout 
+# Auto Logout
 # Middleware Used 'django_auto_logout.middleware.auto_logout',
-from datetime import timedelta
+# from datetime import timedelta
 
-AUTO_LOGOUT = {'IDLE_TIME': timedelta(minutes=30)} # Change Duration if you want
+# AUTO_LOGOUT = {'IDLE_TIME': timedelta(minutes=720)} # Change Duration if you want
 
 ROOT_URLCONF = 'Pinterest_Clone.urls'
 
@@ -125,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -152,9 +152,9 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-cloudinary.config( 
-    cloud_name = "kunalserver", 
-    api_key = "632154883829314", 
+cloudinary.config(
+    cloud_name = "kunalserver",
+    api_key = "632154883829314",
     api_secret = "cqJiLCwR6-GzDJpKZ4ZI9HfAcms",
     api_proxy = "http://proxy.server:3128",
     secure = True,

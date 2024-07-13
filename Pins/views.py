@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 
 def Pinterest_home(request):
     data = Pins.objects.order_by("?")
-    return render (request,'index.html',{'data':data})
+    pro = Profile.objects.all()
+    return render (request,'index.html',{'data':data,'pro':pro})
 
 @login_required(login_url='login')
 def add_pin(request):
@@ -34,7 +35,7 @@ def Signup(request):
 
             if len(password) >= 8 and password == password2 :
 
-                if User.objects.filter(username=email).exists():
+                if User.objects.filter(username=username).exists():
                     messages.error(request,'Username Already Exists')
                     return redirect('login')
 
@@ -140,11 +141,16 @@ def readMore(request,id):
     commentbox = Comments.objects.filter(Post=data.id)
     number_of_likes = data.number_of_likes()
 
+
     liked=False
     if data.likes.filter(id=request.user.id).exists():
         liked=True
 
-    return render (request,'readMore.html',{'data':data,'comment':commentbox,'number_of_likes':number_of_likes,'liked':liked})
+    if Profile.objects.filter(name = data.created_by).exists():
+        pro = Profile.objects.get(name = data.created_by)
+        return render (request,'readMore.html',{'data':data,'comment':commentbox,'number_of_likes':number_of_likes,'liked':liked,"pro":pro})
+    else:
+        return render (request,'readMore.html',{'data':data,'comment':commentbox,'number_of_likes':number_of_likes,'liked':liked,})
 
 
 def CommentBox(request):
@@ -186,3 +192,10 @@ def deletePin(req,id):
     Pins.objects.get(id=id).delete()
     return redirect('home')
 
+@login_required(login_url='login')
+def showotherprofile(request,id):
+    user = request.user
+    pro = Profile.objects.get(id=id)
+    data = Pins.objects.filter(created_by = pro.name)
+    print(pro.name,user)
+    return render(request,"soprofile.html",{"pro":pro,"data":data})
